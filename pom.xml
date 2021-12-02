@@ -57,11 +57,36 @@
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
-            <version>3.0.0</version>
+            <version>3.3.0</version>
         </dependency>
-    </dependencies>
+<!-- Ajout des dépendences findbugs pour localiser les bugs qui doivent être résolus -->
+      	 <dependency>
+			<groupId>com.google.code.findbugs</groupId>
+		    <artifactId>annotations</artifactId>
+		    <version>3.0.1</version>
+		    <scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.code.findbugs</groupId>
+		    <artifactId>jsr305</artifactId>
+		    <version>3.0.1</version>
+		    <scope>provided</scope>
+		</dependency>  
+	</dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.6</version>
+                    <configuration>
+                        <locales>fr</locales>
+                    </configuration>
+                    </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -81,7 +106,8 @@
                                 </manifest>
                             </archive>
                             <descriptorRefs>
-                                <descriptorRef>executable-jar-with-dependencies</descriptorRef>
+<!-- retrait de l'erreur d'écriture "executable" devant jar-with-dependencies-->
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
                         </configuration>
                     </execution>
@@ -142,5 +168,25 @@
             </plugin>
         </plugins>
     </build>
+<!-- ajout des balise reporting pour dire à maven quel plugin utiliser pour les rapports --> 
+      <reporting>    
+		    <plugins>
+		      <plugin>
+		            <groupId>org.codehaus.mojo</groupId>
+		            <artifactId>findbugs-maven-plugin</artifactId>
+		      </plugin>
+		      <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-project-info-reports-plugin</artifactId>
+		        <version>2.8</version>
+		      </plugin>
+		    </plugins>
+	  </reporting>
+		    <distributionManagement>
+		        <site>
+		            <id>site-projet</id>
+		            <url>scp://localhost/tmp/</url>
+		        </site>
+		    </distributionManagement>
 
 </project>
