@@ -73,6 +73,19 @@
 		    <scope>provided</scope>
 		</dependency>  
 	</dependencies>
+	
+	    <!-- Le plugin Javadoc génère des javadocs à l'aide de l'outil Javadoc. -->
+<profiles>
+  <profile>
+    <id>doclint-java8-disable</id>
+    <activation>
+      <jdk>[1.8,)</jdk>
+    </activation>
+    <properties>
+      <javadoc.opts>-Xdoclint:none</javadoc.opts>
+    </properties>
+  </profile>
+</profiles>
 
     <build>
         <pluginManagement>
@@ -87,7 +100,21 @@
                     </plugin>
             </plugins>
         </pluginManagement>
+                
         <plugins>
+           <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-javadoc-plugin</artifactId>
+      <version>3.3.1</version>
+      <executions>
+        <execution>
+          <id>attach-javadocs</id> <!-- The actual id should be apparent from maven output -->
+          <configuration>
+            <additionalparam>${javadoc.opts}</additionalparam>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -150,7 +177,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.5</version>
+                <version>0.8.7</version>
                 <executions>
                     <execution>
                         <goals>
@@ -166,19 +193,53 @@
                     </execution>
                 </executions>
             </plugin>
+             <!-- Le plugin Failsafe est conçu pour exécuter des tests d'intégration pendant que le
+Le plugin Surefire est conçu pour exécuter des tests unitaires. --> 
+            <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.22.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+            </plugin>
         </plugins>
     </build>
 <!-- ajout des balise reporting pour dire à maven quel plugin utiliser pour les rapports --> 
-      <reporting>    
-		    <plugins>
-		      <plugin>
+      <reporting> 
+      		<plugins>
+			<plugin>
+<!-- Le plugin JXR génère une référence croisée des sources du projet. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>3.1.1</version>
+			</plugin>
+			<plugin>
+<!-- Le plugin Surefire Report génère des rapports pour l'unité et l'intégration essais. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.22.2</version>
+			</plugin>
+			<plugin>
+<!-- Le plugin Checkstyle génère un rapport concernant le style de code
+	 utilisé par les développeurs. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.1.1</version>
+			</plugin>   
+		       <plugin>
 		            <groupId>org.codehaus.mojo</groupId>
 		            <artifactId>findbugs-maven-plugin</artifactId>
 		      </plugin>
 		      <plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-project-info-reports-plugin</artifactId>
-		        <version>2.8</version>
+		        <version>3.1.2</version>
 		      </plugin>
 		    </plugins>
 	  </reporting>

@@ -5,5 +5,5 @@ public class Fare {
     public static final double CAR_RATE_PER_HOUR = 1.5;
 
 //ajout constant parking gratuit -30 mn
-    public static final double PARK_LESS_THAN_HALF_HOUR = 0;
+    public static final double PARK_LESS_THAN_HALF_HOUR = 0.0;
 }

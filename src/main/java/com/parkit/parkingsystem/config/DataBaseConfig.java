@@ -18,7 +18,8 @@ public class DataBaseConfig {
         Class.forName("com.mysql.cj.jdbc.Driver");
 // Ajout après le nom de la BDD du serveur de temps.
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/prodzeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC\"", "root",
+                "jdbc:mysql://localhost:3306/prod?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
+                "root",
                 "rootroot");
     }
 

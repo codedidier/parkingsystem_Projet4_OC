@@ -21,7 +21,8 @@ public class DataBaseTestConfig extends DataBaseConfig {
         Class.forName("com.mysql.cj.jdbc.Driver");
 //ajout aprés le nom de la base de données "test" de "?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC\"
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/test?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC", "root",
+                "jdbc:mysql://localhost:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
+                "root",
                 "rootroot");
     }
 

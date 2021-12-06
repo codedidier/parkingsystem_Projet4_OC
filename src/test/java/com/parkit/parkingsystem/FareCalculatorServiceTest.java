@@ -97,7 +97,7 @@ public class FareCalculatorServiceTest {
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
-        assertEquals((0.75 * Fare.BIKE_RATE_PER_HOUR), ticket.getPrice());
+        assertEquals(((0.75 - 0.75) * Fare.BIKE_RATE_PER_HOUR), ticket.getPrice());
     }
 
     @Test
@@ -112,7 +112,7 @@ public class FareCalculatorServiceTest {
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
-        assertEquals((0.75 * Fare.CAR_RATE_PER_HOUR), ticket.getPrice());
+        assertEquals(((0.75 - 0.75) * Fare.CAR_RATE_PER_HOUR), ticket.getPrice());
     }
 
     @Test
@@ -141,7 +141,7 @@ public class FareCalculatorServiceTest {
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
-        ticket.setPrice(fareCalculatorService.calculateFare(ticket, 1));
+        ticket.setPrice(fareCalculatorService.calculateFare(ticket));
         assertEquals((0.25 * Fare.PARK_LESS_THAN_HALF_HOUR), ticket.getPrice());
     }
 
@@ -156,8 +156,8 @@ public class FareCalculatorServiceTest {
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
-        fareCalculatorService.calculateFare(ticket);
         TicketDAO ticketDAO = new TicketDAO();
+        fareCalculatorService.calculateFare(ticket);
         if (ticketDAO.isRecurringUser(ticket)) {
             assertEquals((24 * Fare.CAR_RATE_PER_HOUR), ticket.getPrice() / 0.95);
         } else {

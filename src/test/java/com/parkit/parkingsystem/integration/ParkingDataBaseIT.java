@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 import java.util.Date;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,7 +78,8 @@ public class ParkingDataBaseIT {
         // TODO: check that the fare generated and out time are populated correctly in
         // the database
         Ticket ticket = ticketDAO.getTicket("ABCDEF");
-        Assert.assertNotNull(ticket);
+        Assertions.assertNotNull(ticket);
+        Assertions.assertNotNull(ticket.getOutTime());
         double generatedPrice = ticket.getPrice();// i.e. tarif genere
         Date savedInTime = ticket.getInTime();
         Date savedOutTime = ticket.getOutTime();
@@ -85,8 +87,8 @@ public class ParkingDataBaseIT {
         fareCalculatorService.calculateFare(ticket);
         double calculatedPrice = ticket.getPrice();// recalcul du prix d'après les autres paramètres sauvegardés du
                                                    // ticket
-        Assert.assertEquals(generatedPrice, calculatedPrice);
-        Assert.assertTrue(savedOutTime.after(savedInTime));
+        Assertions.assertEquals(generatedPrice, calculatedPrice);
+        Assertions.assertFalse(savedOutTime.before(savedInTime));
     }
 
 }

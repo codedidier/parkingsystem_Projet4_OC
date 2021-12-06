@@ -99,6 +99,7 @@ public class TicketDAO {
             ps.execute();
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
+
                 result = true;
             }
         } catch (Exception ex) {
