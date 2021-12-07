@@ -23,8 +23,6 @@ import com.parkit.parkingsystem.service.FareCalculatorService;
 import com.parkit.parkingsystem.service.ParkingService;
 import com.parkit.parkingsystem.util.InputReaderUtil;
 
-import junit.framework.Assert;
-
 @ExtendWith(MockitoExtension.class)
 public class ParkingDataBaseIT {
 
@@ -64,10 +62,10 @@ public class ParkingDataBaseIT {
         // TODO: check that a ticket is actualy saved in DB and Parking table is updated
         // with availability
         Ticket ticket = ticketDAO.getTicket("ABCDEF");
-        Assert.assertNotNull(ticket);
-        Assert.assertEquals("ABCDEF", ticket.getVehicleRegNumber());
+        Assertions.assertNotNull(ticket);
+        Assertions.assertEquals("ABCDEF", ticket.getVehicleRegNumber());
         ParkingSpot parkingSpot = parkingSpotDAO.getParkingByParkingNumber(1);
-        Assert.assertEquals(1, parkingSpot.getId());
+        Assertions.assertEquals(1, parkingSpot.getId());
     }
 
     @Test
