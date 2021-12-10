@@ -34,9 +34,8 @@ public class ParkingService {
             if (parkingSpot != null && parkingSpot.getId() > 0) {
                 String vehicleRegNumber = getVehichleRegNumber();
                 parkingSpot.setAvailable(false);
-                parkingSpotDAO.updateParking(parkingSpot);// allot this parking space and mark it's availability as
-                                                          // false
-
+                parkingSpotDAO.updateParking(parkingSpot);// attribuer cette place de parking et marquer sa
+                                                          // disponibilité comme false
                 Date inTime = new Date();
                 Ticket ticket = new Ticket();
                 // ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
@@ -110,7 +109,10 @@ public class ParkingService {
             Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
             Date outTime = new Date();
             ticket.setOutTime(outTime);
-            fareCalculatorService.calculateFare(ticket);
+            if (ticketDAO.isRecurringUser(ticket)) { // story#2: remise 5% pour utilisateur récurent
+                ticket.setIsRecurringUser(true);
+                fareCalculatorService.calculateFare(ticket);
+            }
             if (ticketDAO.updateTicket(ticket)) {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);
