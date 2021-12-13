@@ -1,10 +1,14 @@
 package com.parkit.parkingsystem.integration.config;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,14 +20,44 @@ public class DataBaseTestConfig extends DataBaseConfig {
     private static final Logger logger = LogManager.getLogger("DataBaseTestConfig");
 
     @Override
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
-        logger.info("Create DB connection");
-        Class.forName("com.mysql.cj.jdbc.Driver");
-//ajout aprés le nom de la base de données "test" de "?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC\"
-        return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
-                "root",
-                "rootroot");
+    public Connection getConnection() throws ClassNotFoundException, SQLException, IOException {
+
+        /*
+         * logger.info("Create DB connection");
+         * Class.forName("com.mysql.cj.jdbc.Driver"); //ajout aprés le nom de la base de
+         * données "test" de "?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC\"
+         * return DriverManager.getConnection(
+         * "jdbc:mysql://localhost:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
+         * "root", "rootroot");
+         */
+
+        InputStream inputStream = null;
+        Connection result = null;
+
+        try {
+            Properties properties = new Properties();
+            String fileconfigDb = "testConfig.properties";
+            inputStream = getClass().getClassLoader()
+                    .getResourceAsStream("testConfig.properties");
+            if (inputStream != null) {
+                properties.load(inputStream);
+            } else {
+                throw new FileNotFoundException("property file '" + fileconfigDb
+                        + "' not found in the classpath");
+            }
+
+            logger.info("Create DB connection");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String username = properties.getProperty("username");
+            String password = properties.getProperty("password");
+            String url = properties.getProperty("url");
+            result = DriverManager.getConnection(url, username, password);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            closeInputStream(inputStream);
+        }
+        return result;
     }
 
     @Override
@@ -59,6 +93,22 @@ public class DataBaseTestConfig extends DataBaseConfig {
             } catch (SQLException e) {
                 logger.error("Error while closing result set", e);
             }
+        }
+    }
+
+    /**
+     * @param inputStream : method to close resources
+     */
+    @Override
+    public void closeInputStream(InputStream inputStream) {
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+                logger.info("Closing Input Stream");
+            } catch (IOException e) {
+                logger.error("Error while closing result set", e);
+            }
+
         }
     }
 }
