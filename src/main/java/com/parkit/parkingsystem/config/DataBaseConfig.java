@@ -18,7 +18,7 @@ public class DataBaseConfig {
     private static final Logger logger = LogManager.getLogger("DataBaseConfig");
 
     public Connection getConnection()
-            throws ClassNotFoundException, SQLException, IOException {
+            throws ClassNotFoundException, SQLException {
 
         /*
          * logger.info("Create DB connection");
@@ -77,6 +77,7 @@ public class DataBaseConfig {
                 logger.error("Error while closing prepared statement", e);
             }
         }
+
     }
 
     public void closeResultSet(ResultSet rs) {
@@ -91,7 +92,7 @@ public class DataBaseConfig {
     }
 
     /**
-     * @param inputStream : method to close resources
+     * @param inputStream : méthode pour fermer les ressources
      */
     public void closeInputStream(InputStream inputStream) {
         if (inputStream != null) {
