@@ -39,10 +39,7 @@ public class FareCalculatorService {
             throw new IllegalArgumentException("Unkown Parking Type");
         }
 //story#2: remise 5% utilisateurs recurents
-        /*
-         * TicketDAO ticketDAO = new TicketDAO(); if (ticketDAO.isRecurringUser(ticket))
-         * { ticket.setPrice(ticket.getPrice() * 0.95); }
-         */
+
         if (ticket.isRecurringUser()) {
             ticket.setPrice(ticket.getPrice() * 0.95);
         }

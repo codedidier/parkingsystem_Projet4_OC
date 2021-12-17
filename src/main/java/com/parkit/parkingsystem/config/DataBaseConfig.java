@@ -20,13 +20,6 @@ public class DataBaseConfig {
     public Connection getConnection()
             throws ClassNotFoundException, SQLException {
 
-        /*
-         * logger.info("Create DB connection");
-         * Class.forName("com.mysql.cj.jdbc.Driver"); Ajout après le nom de la BDD du
-         * serveur de temps. return DriverManager.getConnection(
-         * "jdbc:mysql://localhost:3306/prod?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
-         * "root", "rootroot");
-         */
         InputStream inputStream = null;
         Connection result = null;
 
@@ -92,7 +85,8 @@ public class DataBaseConfig {
     }
 
     /**
-     * @param inputStream : méthode pour fermer les ressources
+     * @param inputStream : méthode pour fermer les ressources apres modification du
+     *                    log a la BDD
      */
     public void closeInputStream(InputStream inputStream) {
         if (inputStream != null) {
